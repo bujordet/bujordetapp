@@ -25,30 +25,30 @@ jobs:
           name: Test
           command: yarn test
 
-deploy:
-  docker:
-    - image: circleci/node:8
+  deploy:
+    docker:
+      - image: circleci/node:8
 
-  working_directory: ~/bujordetapp
+    working_directory: ~/bujordetapp
 
-  steps:
-    - checkout
+    steps:
+      - checkout
 
-    - restore_cache:
-        keys:
-        - v1-dependencies-{{ checksum "package.json" }}
-        - v1-dependencies-
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
 
-    - run: yarn install
+      - run: yarn install
 
-    - save_cache:
-        paths:
-          - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-    - run:
-        name: Deploy web dev
-        command: yarn deploy --token=$FIREBASE_TOKEN --non-interactive
+      - run:
+          name: Deploy web dev
+          command: yarn deploy --token=$FIREBASE_TOKEN --non-interactive
 
 
 workflows:
